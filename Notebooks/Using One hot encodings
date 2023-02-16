@@ -51,3 +51,5 @@ one_hot_representation = one_hot_vectorizer.fit_transform(corpus).toarray()
 one_hot_representation
 
 sns.heatmap(one_hot_representation, annot=True, xticklabels=vocabulary, cbar=False)
+
+

@@ -1,0 +1,53 @@
+#importing libraries
+############################################
+from textblob import TextBlob
+import pandas as pd
+import os
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+import seaborn as sns
+nltk.download('punkt')
+import matplotlib
+###### ------ setting up general configuration --------- #####
+sns.set(rc={'figure.figsize':(20,20)})
+import warnings
+warnings.filterwarnings('ignore')
+#############################################
+##############################
+#############################################
+#reading the  dataset
+
+yelp = pd.read_csv("C:/Users/PerezPeA/OneDrive - Unisys/Documents/Training/implement-natural-language-processing-word-embedding/02/demos/implement-nlp-word-embedding/module3/data/yelp.csv")
+yelp.head(5)
+first_reviews = yelp.text[:3].values
+first_reviews
+'''Tokens: word
+Document: Collection of tokens
+Corpus: Collection of documents
+Vocabulary: Diferent words in ourdataset'''
+#############################################
+'''Data manipulation'''
+
+corpus = []
+for sentence in first_reviews:
+    number_of_words = 0
+    words = []
+    sentence_blob = TextBlob(sentence)
+    for word in sentence_blob.words:
+        number_of_words += 1
+        words.append(word)
+        if number_of_words > 10:
+            break
+        corpus.append(' '.join(words))
+corpus
+
+vocabulary = set()
+for word in TextBlob(sentence).words:
+    vocabulary.add(word)
+
+one_hot_vectorizer = CountVectorizer()
+one_hot_representation = one_hot_vectorizer.fit_transform(corpus).toarray()
+one_hot_representation
+
+sns.heatmap(one_hot_representation, annot=True, xticklabels=vocabulary, cbar=False)
